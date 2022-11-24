@@ -1,7 +1,7 @@
 <template>
   <div class="sidebar">
     <div class="sidebar-list">
-      <div class="list">
+      <div class="list" v-show="todoList.length === 0 ? false : true">
         <button class="sidebar-button">
           <img src="@/assets/img/Vector.svg" alt="" />
         </button>
@@ -83,6 +83,24 @@ export default {
     delltodo(id) {
       let index = this.todoList.findIndex((todo) => todo.id === id);
       this.todoList.splice(index, 1);
+    },
+    getUser() {
+      let localUsers = localStorage.getItem("list");
+      if (localUsers) {
+        this.todoList = JSON.parse(localUsers);
+      }
+    },
+  },
+  created() {
+    this.getUser();
+  },
+
+  watch: {
+    todoList: {
+      handler(updatedUsers) {
+        localStorage.setItem("list", JSON.stringify(this.todoList));
+      },
+      deep: true,
     },
   },
 };

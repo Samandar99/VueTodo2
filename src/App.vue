@@ -1,7 +1,7 @@
 <template>
   <div class="conatiner">
     <Sidebar />
-    sadasd
+    <h1 class="title">Задачи отсутствуют</h1>
   </div>
 </template>
 
@@ -15,8 +15,17 @@ export default {
 </script>
 
 <style scoped>
-.conatiner{
+.title {
+  color: #c9d1d3;
+  font-weight: 700;
+  font-size: 32px;
+  font-family: 'Montserrat';
+ 
+}
+
+.conatiner {
   display: flex;
+  
 }
 </style>
 
