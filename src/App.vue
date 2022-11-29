@@ -11,15 +11,13 @@
       </div>
       <div class="line"></div>
 
-      <label
-        class="container-checkbox"
-        v-for="todos in todoApp"
-        :key="todos.id"
-      >
-        <input type="checkbox" checked="checked" />
-        <span class="checkmark"></span>
-        {{ todos.name }}
-      </label>
+      <div class="container-checkbox" v-for="todos in todoApp" :key="todos.id">
+        <input class="input" type="checkbox" id="check" />
+        <label class="texttask">{{ todos.name }}</label>
+        <button @click="delUser(todos.id)">
+          <i class="fa fa-times fa-lg can"></i>
+        </button>
+      </div>
 
       <div class="addtask">
         <button @click="pass = !pass">
@@ -59,11 +57,23 @@ export default {
       viewTitle2: true,
       titleApp: "Фронтенд",
       text: "",
-      todoApp: [
-        { id: idApp++, name: "Vue Router" },
-        { id: idApp++, name: "React and Vue Learn" },
-      ],
+      todoApp: [{ id: idApp++, name: "" }],
     };
+  },
+  watch: {
+    // text(newValue){
+    //   console.log(newValue);
+    // }
+    todoApp: {
+      handler(updatedUsersnew) {
+        localStorage.setItem("lists", JSON.stringify(this.todoApp));
+      },
+      deep: true,
+    },
+  },
+
+  created() {
+    this.getTodoList();
   },
 
   methods: {
@@ -73,6 +83,7 @@ export default {
       }
 
       this.todoApp.push({
+        id: idApp++,
         name: this.text,
       });
       this.text = "";
@@ -94,6 +105,16 @@ export default {
         this.viewTitle2 = true;
       } else {
         this.viewTitle2 = false;
+      }
+    },
+    delUser(id) {
+      let index = this.todoApp.findIndex((user) => user.id === id);
+      this.todoApp.splice(index, 1);
+    },
+    getTodoList() {
+      let locaList = localStorage.getItem("lists");
+      if (locaList) {
+        this.todoApp = JSON.parse(locaList);
       }
     },
   },
@@ -123,10 +144,11 @@ export default {
   font-size: 42px;
 }
 .conatiner-app {
-  width: 800px;
+  max-width: 800px;
   height: 500px;
-
   margin-top: 47px;
+  /* background-color: rebeccapurple; */
+  flex: 1;
 }
 .conatiner-app h1 {
   color: #64c4ed;
@@ -134,6 +156,57 @@ export default {
   font-size: 42px;
   font-family: "Montserrat";
 }
+
+.container-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+}
+.container-checkbox button {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.input[type="checkbox"] {
+  appearance: none;
+  -webkit-appearance: none;
+  height: 25px;
+  width: 25px;
+
+  border: 1px solid #d5d5d5;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.input[type="checkbox"]:after {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  content: "\f00c";
+  font-size: 17px;
+  color: #fff;
+  display: none;
+}
+/* .input[type="checkbox"]:hover {
+  background-color: #a5a5a5;
+} */
+.input[type="checkbox"]:checked {
+  background-color: #5dcd3e;
+}
+
+.input[type="checkbox"]:checked:after {
+  display: block;
+}
+.texttask {
+  margin-left: 15px;
+}
+.can {
+  margin-left: 20px;
+  color: #e3e3e3;
+}
+
 .title_app {
   display: flex;
   gap: 15px;
@@ -145,77 +218,9 @@ export default {
 
 .line {
   border: 1px solid silver;
-  width: 420px;
+  max-width: 420px;
   margin-top: 30px;
   margin-bottom: 41px;
-}
-
-.container-checkbox {
-  display: block;
-  position: relative;
-  padding-left: 35px;
-  margin-bottom: 12px;
-
-  cursor: pointer;
-  font-size: 22px;
-  -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
-}
-
-/* Hide the browser's default checkbox */
-.container-checkbox input {
-  position: absolute;
-  opacity: 0;
-  cursor: pointer;
-  height: 0;
-  width: 0;
-}
-
-/* Create a custom checkbox */
-.checkmark {
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: 25px;
-  width: 25px;
-
-  border: 1px solid #e8e8e8;
-  border-radius: 50%;
-}
-
-/* On mouse-over, add a grey background color */
-
-/* When the checkbox is checked, add a blue background */
-.container-checkbox input:checked ~ .checkmark {
-  background-color: #4dd599;
-  border-radius: 50%;
-}
-
-/* Create the checkmark/indicator (hidden when not checked) */
-.checkmark:after {
-  content: "";
-  position: absolute;
-  display: none;
-}
-
-/* Show the checkmark when checked */
-.container-checkbox input:checked ~ .checkmark:after {
-  display: block;
-}
-
-/* Style the checkmark/indicator */
-.container-checkbox .checkmark:after {
-  left: 7.3px;
-  top: 3px;
-  width: 5px;
-  height: 10px;
-  border: solid white;
-  border-width: 0 3px 3px 0;
-  -webkit-transform: rotate(45deg);
-  -ms-transform: rotate(45deg);
-  transform: rotate(45deg);
 }
 
 .addtask {

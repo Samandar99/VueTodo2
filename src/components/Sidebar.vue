@@ -55,7 +55,7 @@
 </template>
 
 <script>
-let id = 1;
+let id = 0;
 
 export default {
   data() {
@@ -64,11 +64,7 @@ export default {
       titleSidebar: "Все задачи",
       command: "",
       todoList: [
-        { id: id++, name: "Покупки" },
-        { id: id++, name: "Фронтенд" },
-        { id: id++, name: "Фильмы и" },
-        { id: id++, name: "Книги" },
-        { id: id++, name: "Личное" },
+        { id: id++, name: ""},
       ],
     };
   },
