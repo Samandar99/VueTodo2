@@ -66,7 +66,7 @@ export default {
     // }
     todoApp: {
       handler(updatedUsersnew) {
-        localStorage.setItem("lists", JSON.stringify(this.todoApp));
+        localStorage.setItem("lis", JSON.stringify(this.todoApp));
       },
       deep: true,
     },
@@ -112,7 +112,7 @@ export default {
       this.todoApp.splice(index, 1);
     },
     getTodoList() {
-      let locaList = localStorage.getItem("lists");
+      let locaList = localStorage.getItem("lis");
       if (locaList) {
         this.todoApp = JSON.parse(locaList);
       }
