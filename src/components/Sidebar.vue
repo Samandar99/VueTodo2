@@ -1,14 +1,18 @@
 <template>
   <div class="sidebar">
     <div class="sidebar-list">
-      <div class="list" v-show="todoList.length === 0 ? false : true">
+      <div class="list" v-if="todoList.length === 0 ? false : true">
         <button class="sidebar-button">
           <img src="@/assets/img/Vector.svg" alt="" />
         </button>
         <span>{{ titleSidebar }}</span>
       </div>
 
-      <div class="sidebar-toDo" v-for="todo in todoList" :key="todo.id">
+      <div
+        class="sidebar-toDo"
+        v-for="todo in todoList"
+        :key="todo.id"
+      >
         <div class="sideleft">
           <div class="circle"></div>
           <span>{{ todo.name }}</span>
@@ -52,6 +56,7 @@
 
 <script>
 let id = 1;
+
 export default {
   data() {
     return {
@@ -91,6 +96,8 @@ export default {
       }
     },
   },
+  
+
   created() {
     this.getUser();
   },
@@ -99,9 +106,11 @@ export default {
     todoList: {
       handler(updatedUsers) {
         localStorage.setItem("list", JSON.stringify(this.todoList));
+        this.$emit("send", updatedUsers.length);
+        this.$emit("send2",updatedUsers.length)
       },
       deep: true,
-    },
+    }
   },
 };
 </script>
@@ -119,6 +128,7 @@ export default {
   height: 100vh;
   background-color: #e5e5e5;
   padding: 0px 30px;
+  
 }
 
 .sidebar-button {
@@ -149,6 +159,7 @@ export default {
   padding: 12px 12px;
   transition: all 0.2s ease;
 }
+
 .sidebar-toDo:hover {
   background-color: #fff;
   box-shadow: 0px 2px 10px rgba(0, 0, 0, 0.03);
@@ -207,12 +218,13 @@ export default {
 }
 
 .add-list {
-  margin-top: 48px;
-  margin-left: 7px;
+  
+  margin: 32px 0px;
   display: flex;
   gap: 10px;
   align-items: center;
   position: relative;
+  
 }
 .sidebar__plus {
   color: #868686;
