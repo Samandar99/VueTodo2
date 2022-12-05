@@ -8,13 +8,9 @@
         <span>{{ titleSidebar }}</span>
       </div>
 
-      <div
-        class="sidebar-toDo"
-        v-for="todo in todoList"
-        :key="todo.id"
-      >
+      <div class="sidebar-toDo" v-for="todo in todoList" :key="todo.id">
         <div class="sideleft">
-          <div class="circle"></div>
+          <div class="circle" :style="{ background: todo.color }"></div>
           <span>{{ todo.name }}</span>
         </div>
 
@@ -37,14 +33,13 @@
           <form @submit.prevent="addTodo">
             <input type="text" placeholder="Название папки" v-model="command" />
             <div class="circle_change">
-              <div class="child-circle"></div>
-              <div class="child-circle"></div>
-              <div class="child-circle"></div>
-              <div class="child-circle"></div>
-              <div class="child-circle"></div>
-              <div class="child-circle"></div>
-              <div class="child-circle"></div>
-              <div class="child-circle"></div>
+              <div
+                class="child-circle"
+                v-for="(color, index) in colors"
+                :key="index"
+                @click="choice(color, index)"
+                :style="{ background: color }"
+              ></div>
             </div>
             <button class="addbutton">Добавить</button>
           </form>
@@ -63,9 +58,10 @@ export default {
       modal: false,
       titleSidebar: "Все задачи",
       command: "",
-      todoList: [
-        { id: id++, name: ""},
-      ],
+      circle: "green",
+
+      todoList: [{ id: id++, name: "", color: null }],
+      colors: ["red", "blue", "orange"],
     };
   },
 
@@ -77,8 +73,9 @@ export default {
 
       this.todoList.push({
         name: this.command,
+        color: this.circle,
       });
-
+      this.circle = "green";
       this.command = "";
     },
     delltodo(id) {
@@ -91,8 +88,11 @@ export default {
         this.todoList = JSON.parse(localUsers);
       }
     },
+    choice(color) {
+      // this.todoList.color = color || 'green'
+      this.circle = color || "green";
+    },
   },
-  
 
   created() {
     this.getUser();
@@ -103,10 +103,10 @@ export default {
       handler(updatedUsers) {
         localStorage.setItem("list", JSON.stringify(this.todoList));
         this.$emit("send", updatedUsers.length);
-        this.$emit("send2",updatedUsers.length)
+        this.$emit("send2", updatedUsers.length);
       },
       deep: true,
-    }
+    },
   },
 };
 </script>
@@ -124,7 +124,6 @@ export default {
   height: 100vh;
   background-color: #e5e5e5;
   padding: 0px 30px;
-  
 }
 
 .sidebar-button {
@@ -164,36 +163,8 @@ export default {
 .circle {
   width: 10px;
   height: 10px;
-  background: #64c4ed;
   border-radius: 50%;
 }
-
-.circle1 {
-  width: 10px;
-  height: 10px;
-  background: #42b883;
-  border-radius: 50%;
-}
-
-.circle2 {
-  width: 10px;
-  height: 10px;
-  background: #ffbbcc;
-  border-radius: 50%;
-}
-.circle3 {
-  width: 10px;
-  height: 10px;
-  background: #b6e6bd;
-  border-radius: 50%;
-}
-.circle4 {
-  width: 10px;
-  height: 10px;
-  background: #c9d1d3;
-  border-radius: 50%;
-}
-
 .cancel {
   color: #e5e5e5;
 }
@@ -214,13 +185,11 @@ export default {
 }
 
 .add-list {
-  
   margin: 32px 0px;
   display: flex;
   gap: 10px;
   align-items: center;
   position: relative;
-  
 }
 .sidebar__plus {
   color: #868686;
@@ -260,7 +229,6 @@ input::placeholder {
 .child-circle {
   width: 20px;
   height: 20px;
-  background-color: #42b883;
   border-radius: 50%;
 }
 .addbutton {
@@ -272,31 +240,6 @@ input::placeholder {
 
   border: none;
   cursor: pointer;
-}
-
-.child-circle:nth-child(1) {
-  background-color: #c9d1d3;
-}
-.child-circle:nth-child(2) {
-  background-color: #42b883;
-}
-.child-circle:nth-child(3) {
-  background-color: #64c4ed;
-}
-.child-circle:nth-child(4) {
-  background-color: #ffbbcc;
-}
-.child-circle:nth-child(5) {
-  background-color: #b6e6bd;
-}
-.child-circle:nth-child(6) {
-  background-color: #c355f5;
-}
-.child-circle:nth-child(7) {
-  background-color: #09011a;
-}
-.child-circle:nth-child(8) {
-  background-color: #ff6464;
 }
 
 .model-cancel {
